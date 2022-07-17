@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { Sale } from "../../models/sale";
+import { BASE_URL } from "../../utils/request";
 import BotaoNotificacao from '../BotaoNotificacao';
 import './style.css';
 
@@ -14,10 +15,12 @@ function VendasCard() {
     const [minDate, setMinDate] = useState(min);
     const [maxDate, setMaxDate] = useState(max);
 
+    const [sales, setSales] = useState<Sale[]>([]);
+
     useEffect(() => {
-        axios.get("http://localhost:8080/sales")
+        axios.get(`${BASE_URL}/sales`)
         .then(response => {
-            console.log(response.data);
+            setSales(response.data.content);
         })
     }, [])
 
@@ -58,45 +61,23 @@ function VendasCard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="exibeCom992">01</td>
-                            <td className="exibeCom576">18/02/1986</td>
-                            <td>Adriano</td>
-                            <td className="exibeCom992">122</td>
-                            <td className="exibeCom992">97</td>
-                            <td>123.000,00</td>
-                            <td>
-                                <div className="botao-vermelho-container">
-                                    <BotaoNotificacao />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="exibeCom992">02</td>
-                            <td className="exibeCom576">31/08/1988</td>
-                            <td>Rebeca</td>
-                            <td className="exibeCom992">250</td>
-                            <td className="exibeCom992">150</td>
-                            <td>456.789,00</td>
-                            <td>
-                                <div className="botao-vermelho-container">
-                                    <BotaoNotificacao />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="exibeCom992">03</td>
-                            <td className="exibeCom576">18/03/2009</td>
-                            <td>Juninho</td>
-                            <td className="exibeCom992">312</td>
-                            <td className="exibeCom992">160</td>
-                            <td>789.080,00</td>
-                            <td>
-                                <div className="botao-vermelho-container">
-                                    <BotaoNotificacao />
-                                </div>
-                            </td>
-                        </tr>
+                        {sales.map(sale => {
+                            return (
+                                <tr key={sale.id}>
+                                    <td className="exibeCom992">{sale.id}</td>
+                                    <td className="exibeCom576">{new Date(sale.date).toLocaleDateString()}</td>
+                                    <td>{sale.sellerName}</td>
+                                    <td className="exibeCom992">{sale.visited}</td>
+                                    <td className="exibeCom992">{sale.deals}</td>
+                                    <td>R$ {sale.amount.toFixed(2)}</td>
+                                    <td>
+                                        <div className="botao-vermelho-container">
+                                            <BotaoNotificacao />
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>
