@@ -57,7 +57,7 @@ function VendasCard() {
                     <thead>
                         <tr>
                             <th className="exibeCom992">ID</th>
-                            <th className="exibeCom576">Data Nascimento</th>
+                            <th className="exibeCom576">Data</th>
                             <th>Vendedor</th>
                             <th className="exibeCom992">Visitas</th>
                             <th className="exibeCom992">Vendas</th>
@@ -77,7 +77,7 @@ function VendasCard() {
                                     <td>R$ {sale.amount.toFixed(2)}</td>
                                     <td>
                                         <div className="botao-vermelho-container">
-                                            <BotaoNotificacao />
+                                            <BotaoNotificacao saleId={sale.id}/>
                                         </div>
                                     </td>
                                 </tr>
